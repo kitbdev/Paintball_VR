@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3879555852159823001}
   - component: {fileID: 4006308033837095347}
+  - component: {fileID: 290758971}
   m_Layer: 0
   m_Name: paintball
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3420009464656170032}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.949045, y: -9.937759, z: 0.3201481}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 7379410592862879911}
   m_Father: {fileID: 0}
@@ -48,6 +49,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &290758971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420009464656170032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd5d58010464674b857570812c9d7d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  colorIndx: 0
+  splatFXPrefab: {fileID: 1549658012401432, guid: 1e20ed8bbd31b484eab31acc1071cfe0,
+    type: 3}
 --- !u!1 &6313798432178346721
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +124,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 75bba2bdec5570445b030c39e961823d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -34,6 +34,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_7A95A6BB:
+        m_Texture: {fileID: 2800000, guid: ec2a3fdc7e06cd040a2d877278ab41b3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_8164FEB2:
         m_Texture: {fileID: 2800000, guid: 14b2b8fd3a1a71d40b48d4253d4f7af3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -44,6 +48,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - Texture2D_CF6C1CD3:
         m_Texture: {fileID: 2800000, guid: 4a67dc0fc82380543b4da7f8805c8064, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_F616F942:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -93,6 +101,7 @@ Material:
     m_Floats:
     - Boolean_967E0777: 0
     - MAIN_LIGHT_CALCULATE_SHADOWS: 1
+    - Vector1_76BB3BFF: 1
     - Vector1_D807E583: 0
     - _AlphaClip: 0
     - _Blend: 0
