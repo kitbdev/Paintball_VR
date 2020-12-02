@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 0
+    path: Assets/_PaintballGame/Scenes/PaintballGame.unity
+    guid: ada72ec44b6c1644a97767a27fa9d09c
+  - enabled: 1
+    path: Assets/pbscene.unity
+    guid: d7a72e9da24c4414a915104308884900
   m_configObjects: {}
