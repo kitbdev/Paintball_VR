@@ -13,6 +13,7 @@ public class PaintGun : MonoBehaviour {
     public float lastShotTime = 0;
     Transform cam;
     public Rigidbody rb;
+    public Bottle paintBottle;
     PaintHandler paintHandler;
 
     void Start() {
@@ -47,6 +48,7 @@ public class PaintGun : MonoBehaviour {
         } else if (inp4) {
             colorIndx = -1;
         }
+        paintBottle.SetColor(paintHandler.GetColor(colorIndx));
         // todo tint crosshair?
     }
     void Shoot() {

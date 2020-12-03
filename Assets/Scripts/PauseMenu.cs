@@ -14,6 +14,8 @@ public class PauseMenu : MonoBehaviour {
         // SetPaused(false);
         if (paused) {
             ShowMenu();
+        } else {
+            StartGame();
         }
     }
 

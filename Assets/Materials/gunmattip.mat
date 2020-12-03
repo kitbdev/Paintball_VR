@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: gunmat
+  m_Name: gunmattip
   m_Shader: {fileID: -6465566751694194690, guid: 4f81222416ba90e41b48aca4e580035f,
     type: 3}
   m_ShaderKeywords: 
@@ -115,4 +115,4 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
+    - _Tint: {r: 0.9811321, g: 0.48589215, b: 0.254539, a: 1}
