@@ -21,6 +21,7 @@ public class PaintHandler : MonoBehaviour {
     // List<float> paintDripTimers = new List<float>();
     [ContextMenuItem("Clear", "ClearPaint")]
     public bool clearPaintOnStart = true;
+    [ContextMenuItem("Fill Paint", "FillWithPaint")]
     public bool clearPaintOnEnd = true;
 
 
@@ -50,51 +51,69 @@ public class PaintHandler : MonoBehaviour {
         paintmap.SetPixels(cols);
         paintmap.Apply(true);
     }
+    public void FillWithPaint() {
+        Debug.Log("Painting entire paintmap");
+        var cols = paintmap.GetPixels();
+        for (int i = 0; i < cols.Length; i++) {
+            cols[i] = Color.white;
+        }
+        paintmap.SetPixels(cols);
+        paintmap.Apply(true);
+    }
     public int GetPaintColor(Vector3 pos, Vector3 dir) {
-        int color = 0;
+        int color = -2;
         // if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 50)) {
-        //             Vector2 uvpoint = hit.lightmapCoord;
-        //             // todo get area and average
-        //             int pointX = (int)(uvpoint.x * paintmap.width);
-        //             int pointY = (int)(uvpoint.y * paintmap.height) + uvOffsetY;
-        //             // Color[] pmapoColors = paintmap.GetPixels(startX, startY, blockWidth, blockHeight);
-        //             Color col = paintmap.GetPixel(pointX, pointY);
+        if (Physics.Raycast(pos, dir, out var hit, 100, paintableLayer.value)) {
+            Vector2 uvpoint = hit.lightmapCoord;
+            if (uvpoint == Vector2.zero) {
+                Debug.Log("No lightmap value for " + hit.collider.name);
+                return -2;
+            }
+            // todo get area and average
+            int pointX = (int)(uvpoint.x * paintmap.width);
+            int pointY = (int)(uvpoint.y * paintmap.height);
+            // Color[] pmapoColors = paintmap.GetPixels(startX, startY, blockWidth, blockHeight);
+            Color col = paintmap.GetPixel(pointX, pointY);
 
-        //             // get dominant color
-        //             int mc = 0;
-        //             float mcv = 0;
-        //             for (int c = 0; c < 4; c++) {
-        //                 if (col[c] > mcv) {
-        //                     mcv = col[c];
-        //                     mc = c;
-        //                 }
-        //             }
-        //             if (mcv <= 0.1f) {
-        //                 Debug.Log("No Paint there");
-        //             } else {
-        //                 Debug.Log($"Paint {mc} {(mc == 0 ? "green" : (mc == 1 ? "purple" : (mc == 2 ? "white" : "other")))}");
-        //             }
-        //         }
+            // get dominant color
+            col.a = 1;
+            int dcolor = -3;
+            if (col.grayscale == 0) {
+                dcolor = -1;
+            } else if (col == paintColor1) {
+                dcolor = 0;
+            } else if (col == paintColor2) {
+                dcolor = 1;
+            } else if (col == paintColor3) {
+                dcolor = 2;
+            }
+            // otherwise get the closest
+            if (dcolor == -1) {
+                Debug.Log("No Paint there");
+            } else {
+                Debug.Log($"Paint is {dcolor} {(dcolor == 0 ? "magenta" : (dcolor == 1 ? "cyan" : (dcolor == 2 ? "yellow" : "other")))}");
+            }
+            color = dcolor;
+        }
         return color;
     }
     public Color GetColor(int colorIndx) {
         Color color = Color.black;
-        switch (colorIndx)
-        {
+        switch (colorIndx) {
             case -1:
-            color = Color.white;
-            break;
+                color = Color.white;
+                break;
             case 0:
-            color = paintColor1;
-            break;
+                color = paintColor1;
+                break;
             case 1:
-            color = paintColor2;
-            break;
+                color = paintColor2;
+                break;
             case 2:
-            color = paintColor3;
-            break;
+                color = paintColor3;
+                break;
             default:
-            break;
+                break;
         }
         return color;
     }
@@ -252,14 +271,16 @@ public class PaintHandler : MonoBehaviour {
         }
         // 1px blur
         if (blurPaint) {
-            for (int x = 1; x < blockWidth - 1; x++) {
-                for (int y = 1; y < blockHeight - 1; y++) {
-                    // should set in a new array
+            Color[][] btsplatcols = new Color[blockHeight][];
+            for (int y = 1; y < blockHeight - 1; y++) {
+                btsplatcols[y] = new Color[blockWidth];
+                for (int x = 1; x < blockWidth - 1; x++) {
                     float navg = (tsplatcols[y][x].a + tsplatcols[y - 1][x].a + tsplatcols[y + 1][x].a +
                         tsplatcols[y][x - 1].a + tsplatcols[y + 1][x].a) / 5f;
-                    tsplatcols[y][x] = new Color(navg, navg, navg, navg);
+                    btsplatcols[y][x] = new Color(navg, navg, navg, navg);
                 }
             }
+            tsplatcols = btsplatcols;
         }
         // convert to single array
         Color[] splatmapColors = new Color[blockWidth * blockHeight];

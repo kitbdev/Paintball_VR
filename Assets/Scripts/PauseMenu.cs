@@ -1,20 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
     public bool paused;
+    CanvasGroup pauseMenu;
+    public Text startbtnText;
 
     void Start() {
-        SetPaused(false);
+        pauseMenu = GetComponent<CanvasGroup>();
+        // SetPaused(false);
+        if (paused) {
+            ShowMenu();
+        }
     }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            SetPaused(!paused);
+            // SetPaused(!paused);
+            if (!paused) {
+                ShowMenu();
+            } else {
+                StartGame();
+            }
         }
     }
-    void SetPaused(bool pause) {
+    public void SetPaused(bool pause) {
         paused = pause;
         if (paused) {
             Time.timeScale = 0;
@@ -25,5 +38,28 @@ public class PauseMenu : MonoBehaviour {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+    }
+    public void StartGame() {
+        SetPaused(false);
+        pauseMenu.alpha = 0;
+        pauseMenu.blocksRaycasts = false;
+        pauseMenu.interactable = false;
+        startbtnText.text = "Resume";
+    }
+    public void RestartGame() {
+        SceneManager.LoadScene(0);
+        StartGame();
+    }
+    public void ShowMenu() {
+        SetPaused(true);
+        pauseMenu.alpha = 1;
+        pauseMenu.blocksRaycasts = true;
+        pauseMenu.interactable = true;
+    }
+    public void OptionsBtn() {
+        // todo
+    }
+    public void Exit() {
+        Application.Quit();
     }
 }
