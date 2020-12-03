@@ -12,6 +12,9 @@ public class PauseMenu : MonoBehaviour {
     void Start() {
         pauseMenu = GetComponent<CanvasGroup>();
         // SetPaused(false);
+#if !UNITY_EDITOR
+        paused = true;
+#endif
         if (paused) {
             ShowMenu();
         } else {

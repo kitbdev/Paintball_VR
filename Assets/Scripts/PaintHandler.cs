@@ -24,6 +24,7 @@ public class PaintHandler : MonoBehaviour {
     [ContextMenuItem("Fill Paint", "FillWithPaint")]
     public bool clearPaintOnEnd = true;
     public bool dbglog = true;
+    // public UnityEngine.UI.Text dbgtext;
 
 
     void Start() {
@@ -221,6 +222,9 @@ public class PaintHandler : MonoBehaviour {
         uvscale /= 2;
         // uvscale += Vector2.one * 32;
         uvscale *= paintSplatScale;
+        if (colorIndx == -1) {
+            uvscale *= 1.5f;
+        }
         int blockWidth = (int)(uvscale.x * paintmap.width + 8);
         int blockHeight = (int)(uvscale.y * paintmap.height + 8);
         blockWidth = Mathf.Clamp(blockWidth, 4, paintmap.width / 2);

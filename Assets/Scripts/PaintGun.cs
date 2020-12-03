@@ -32,25 +32,20 @@ public class PaintGun : MonoBehaviour {
             }
         }
         float inpscroll = Input.GetAxis("Mouse ScrollWheel");
-        bool inp1 = Input.GetKeyDown(KeyCode.Alpha1);
-        bool inp2 = Input.GetKeyDown(KeyCode.Alpha2);
-        bool inp3 = Input.GetKeyDown(KeyCode.Alpha3);
-        bool inp4 = Input.GetKeyDown(KeyCode.Alpha4);
         if (inpscroll != 0) {
             colorIndx += -1 * (int)Mathf.Sign(inpscroll);
             colorIndx = Mathf.Clamp(colorIndx, -1, 3);
         }
-        if (inp1) {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
             colorIndx = 0;
-        } else if (inp2) {
+        } else if (Input.GetKeyDown(KeyCode.Alpha2)) {
             colorIndx = 1;
-        } else if (inp3) {
+        } else if (Input.GetKeyDown(KeyCode.Alpha3)) {
             colorIndx = 2;
-        } else if (inp4) {
+        } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
             colorIndx = -1;
         }
         paintBottle.SetColor(paintHandler.GetColor(colorIndx));
-        // todo tint crosshair?
     }
     void Shoot() {
         GameObject sfxgo = Instantiate(shootFxPrefab, shootpoint.position, shootpoint.rotation);

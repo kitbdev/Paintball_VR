@@ -1977,7 +1977,7 @@ MonoBehaviour:
   paintRunEffect: 1
   blurPaint: 0
   clearPaintOnStart: 1
-  clearPaintOnEnd: 0
+  clearPaintOnEnd: 1
   dbglog: 0
 --- !u!4 &1321897491
 Transform:
@@ -2257,6 +2257,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StitchLightmapSeams
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280159578064684799, guid: 6202055492bd72b458f544b44d431f53,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4198729654812773832, guid: 6202055492bd72b458f544b44d431f53,
         type: 3}
@@ -6346,6 +6351,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3280159578064684799, guid: 6202055492bd72b458f544b44d431f53,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4198729654812773833, guid: 6202055492bd72b458f544b44d431f53,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6768,6 +6778,7 @@ GameObject:
   - component: {fileID: 2056378398}
   - component: {fileID: 2056378397}
   - component: {fileID: 2056378396}
+  - component: {fileID: 2056378400}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -6784,7 +6795,7 @@ SphereCollider:
   m_GameObject: {fileID: 2056378395}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -6818,7 +6829,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6849,6 +6860,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &2056378400
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056378395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2068112218
 GameObject:
   m_ObjectHideFlags: 0
@@ -7059,6 +7084,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3280159578064684799, guid: 6202055492bd72b458f544b44d431f53,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4198729656327043569, guid: 6202055492bd72b458f544b44d431f53,
         type: 3}
       propertyPath: m_LocalPosition.x
