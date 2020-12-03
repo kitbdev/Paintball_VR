@@ -453,6 +453,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624417780}
   m_CullTransparentMesh: 0
+--- !u!54 &708253502 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 5400000, guid: 5e9e851c0e142814dac026a256ba2ac0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1245449272}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &858596553
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,13 +761,14 @@ MonoBehaviour:
   paintableLayer:
     serializedVersion: 2
     m_Bits: 311
-  paintScale: 2
+  paintScale: 3
   randomRotation: 1
   randomScaleAmount: 0.1
   numPaintSplatRays: 10
   paintRunEffect: 1
   blurPaint: 0
-  clearPaintOnStart: 1
+  clearPaintOnStart: 0
+  clearPaintOnEnd: 0
 --- !u!4 &1321897491
 Transform:
   m_ObjectHideFlags: 0
@@ -4891,7 +4898,11 @@ MonoBehaviour:
   paintballPrefab: {fileID: 3420009464656170032, guid: 60a1427eddce06b45a540fc91daeff54,
     type: 3}
   shootpoint: {fileID: 1106013875}
-  shootForce: 15
+  paintableLayer:
+    serializedVersion: 2
+    m_Bits: 311
+  shootForce: 1.5
   colorIndx: 1
   shootRepeatDur: 0.2
   lastShotTime: 0
+  rb: {fileID: 708253502}
