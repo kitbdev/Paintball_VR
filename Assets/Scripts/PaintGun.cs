@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PaintGun : MonoBehaviour {
     public GameObject paintballPrefab;
+    public GameObject shootFxPrefab;
     public Transform shootpoint;
     public LayerMask paintableLayer;
     public float shootForce = 10;
@@ -52,20 +53,25 @@ public class PaintGun : MonoBehaviour {
         // todo tint crosshair?
     }
     void Shoot() {
-        GameObject pb = Instantiate(paintballPrefab, shootpoint.position, shootpoint.rotation);
-        PaintProjectile projectile = pb.GetComponent<PaintProjectile>();
+        GameObject sfxgo = Instantiate(shootFxPrefab, shootpoint.position, shootpoint.rotation);
+        Color color = paintHandler.GetColor(colorIndx);
+        var sfxps = sfxgo.GetComponent<ParticleSystem>().main;
+        sfxps.startColor = new ParticleSystem.MinMaxGradient(color);
+        sfxgo.transform.parent = transform;
+        GameObject pbgo = Instantiate(paintballPrefab, shootpoint.position, shootpoint.rotation);
+        PaintProjectile projectile = pbgo.GetComponent<PaintProjectile>();
 
-        Vector3 shootDir = pb.transform.forward;
+        Vector3 shootDir = pbgo.transform.forward;
         if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, 100, paintableLayer.value)) {
             shootDir = hit.point - shootpoint.position;
             shootDir.Normalize();
         }
 
         projectile.colorIndx = colorIndx;
-        Renderer r = pb.GetComponentInChildren<Renderer>();
-        r.material.SetColor("_Tint", paintHandler.GetColor(colorIndx));
+        Renderer r = pbgo.GetComponentInChildren<Renderer>();
+        r.material.SetColor("_Tint", color);
 
-        Rigidbody rb = pb.GetComponent<Rigidbody>();
+        Rigidbody rb = pbgo.GetComponent<Rigidbody>();
         rb.AddForce(shootForce * shootDir + rb.velocity, ForceMode.Impulse);
         lastShotTime = Time.time;
     }

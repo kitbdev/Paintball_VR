@@ -10,7 +10,7 @@ public class PaintHandler : MonoBehaviour {
     public Color paintColor2 = Color.cyan;
     public Color paintColor3 = Color.yellow;
     public LayerMask paintableLayer;
-    public float paintScale = 0.1f;
+    public float paintSplatScale = 3.5f;
     public bool randomRotation = true;
     public float randomScaleAmount = 0.2f;
     public int numPaintSplatRays = 15;
@@ -23,6 +23,7 @@ public class PaintHandler : MonoBehaviour {
     public bool clearPaintOnStart = true;
     [ContextMenuItem("Fill Paint", "FillWithPaint")]
     public bool clearPaintOnEnd = true;
+    public bool dbglog = true;
 
 
     void Start() {
@@ -179,12 +180,14 @@ public class PaintHandler : MonoBehaviour {
                         goScale.y = lscale.z;
                         // dbgscale = "top";
                     }
-                    // Debug.Log($"fd:{fdot} rd:{rdot} ud:{updot}");
+                    // Debug.Log($"fd:{fdot} rd:{rdot} ud:{updot} side {dbgscale}");
                 }
                 Vector2 uvscale = new Vector2(affectedR.lightmapScaleOffset.x, affectedR.lightmapScaleOffset.y);
                 // uvscale.x = goScale.x;
                 // uvscale.y = goScale.y;
-                // Debug.Log($"hit {affectedR.name} uvpoint: {uvpoint} uvscale: {uvscale} goscale: {goScale} side {dbgscale}");
+                if (dbglog) {
+                    Debug.Log($"hit {affectedR.name} uvpoint: {uvpoint.x},{uvpoint.y} uvscale: {uvscale} goscale: {goScale} ");
+                }
                 float gscaleRatio = goScale.x / goScale.y;
                 // uvscale.x = Mathf.Pow(uvscale.x, 0.5f);
                 // uvscale.y = Mathf.Pow(uvscale.y, 0.5f);
@@ -196,8 +199,8 @@ public class PaintHandler : MonoBehaviour {
                     // uvscale.x *= gscaleRatio;
                     uvscale.y *= gscaleRatio;
                 }
-                uvscale.x = Mathf.Clamp(uvscale.x, 0.01f, 1f);
-                uvscale.y = Mathf.Clamp(uvscale.y, 0.01f, 1f);
+                uvscale.x = Mathf.Clamp(uvscale.x, 0.02f, 1f);
+                uvscale.y = Mathf.Clamp(uvscale.y, 0.02f, 1f);
                 Paint(uvpoint, uvscale, color, true);
             }
             paintmap.Apply();
@@ -217,7 +220,7 @@ public class PaintHandler : MonoBehaviour {
         uvscale /= 16;
         uvscale /= 2;
         // uvscale += Vector2.one * 32;
-        uvscale *= paintScale;
+        uvscale *= paintSplatScale;
         int blockWidth = (int)(uvscale.x * paintmap.width + 8);
         int blockHeight = (int)(uvscale.y * paintmap.height + 8);
         blockWidth = Mathf.Clamp(blockWidth, 4, paintmap.width / 2);
@@ -292,7 +295,10 @@ public class PaintHandler : MonoBehaviour {
         Color colorToPaint = GetColor(colorIndx);
         // add splat to original array
         Color[] originalColors = paintmap.GetPixels(startX, startY, blockWidth, blockHeight);
-        // Debug.Log($"painting at: {startX},{startY}  block: {blockWidth},{blockHeight} rot:{splatRandRot / 6.283f},sc:{splatRandScale}");
+
+        if (dbglog) {
+            Debug.Log($"painting at: {startX},{startY}  block: {blockWidth},{blockHeight} rot:{splatRandRot / 6.283f},sc:{splatRandScale}");
+        }
         for (int i = 0; i < splatmapColors.Length; i++) {
             // int x = i / scaleX; //Mathf.FloorToInt((i + 0f) / scaleX);
             // int y = i % scaleY;

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PaintHandler
   - Paintball
+  - Target
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Paintball
   - IgnorePaint
-  - 
+  - gun
   - 
   - 
   - 
