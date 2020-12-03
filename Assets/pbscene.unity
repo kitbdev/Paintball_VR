@@ -56,16 +56,16 @@ LightmapSettings:
   m_LightmapEditorSettings:
     serializedVersion: 12
     m_Resolution: 2
-    m_BakeResolution: 20
+    m_BakeResolution: 30
     m_AtlasSize: 2048
     m_AO: 1
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
-    m_CompAOExponentDirect: 0
+    m_CompAOExponentDirect: 1
     m_ExtractAmbientOcclusion: 0
     m_Padding: 2
     m_LightmapParameters: {fileID: 0}
-    m_LightmapsBakeMode: 0
+    m_LightmapsBakeMode: 1
     m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: ec4591ab8c741e649b1775f084c50936,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 53185886}
   - component: {fileID: 53185885}
   - component: {fileID: 53185884}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 624417783}
   - component: {fileID: 624417782}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -417,7 +417,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &624417782
 MonoBehaviour:
@@ -609,7 +609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1106013875}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: shooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106013874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0.74}
+  m_LocalPosition: {x: -0.32, y: -0, z: 0.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 53185883}
@@ -640,6 +640,14 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_Name
       value: FPSController
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -697,6 +705,11 @@ PrefabInstance:
       propertyPath: m_MouseLook.lockCursor
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 14300000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 4fce5ec4d4e98fe41acd0ea05eb476cc,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
 --- !u!4 &1245449273 stripped
@@ -735,15 +748,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paintmap: {fileID: 2800000, guid: ec2a3fdc7e06cd040a2d877278ab41b3, type: 3}
-  splatTex: {fileID: 2800000, guid: f1e29f772b72aa04392f54a690c7bfff, type: 3}
+  splatTex: {fileID: 2800000, guid: 5ddc369653910564b8025fe624347a5b, type: 3}
   paintColor1: {r: 1, g: 0, b: 1, a: 1}
   paintColor2: {r: 0, g: 1, b: 1, a: 1}
   paintColor3: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  paintScale: 0.1
-  randomRotation: 0
-  randomScaleAmount: 0
-  numPaintSplatRays: 2
+  paintableLayer:
+    serializedVersion: 2
+    m_Bits: 311
+  paintScale: 2
+  randomRotation: 1
+  randomScaleAmount: 0.1
+  numPaintSplatRays: 10
   paintRunEffect: 1
+  blurPaint: 0
   clearPaintOnStart: 1
 --- !u!4 &1321897491
 Transform:
@@ -771,7 +788,7 @@ GameObject:
   - component: {fileID: 1374118718}
   - component: {fileID: 1374118717}
   - component: {fileID: 1374118716}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -880,6 +897,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 126
       objectReference: {fileID: 0}
+    - target: {fileID: 1085447644838962, guid: 4a10d14c005036744848edafde148a43, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 1087666728550396, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
@@ -935,6 +956,10 @@ PrefabInstance:
     - target: {fileID: 1221026463355008, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221026463355008, guid: 4a10d14c005036744848edafde148a43, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1221185837672158, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1100,6 +1125,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 126
       objectReference: {fileID: 0}
+    - target: {fileID: 1618245067426222, guid: 4a10d14c005036744848edafde148a43, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 1632711419535588, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
@@ -1115,6 +1144,10 @@ PrefabInstance:
     - target: {fileID: 1666287680012424, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 1666287680012424, guid: 4a10d14c005036744848edafde148a43, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1668910734865606, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1268,6 +1301,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.64
       objectReference: {fileID: 0}
+    - target: {fileID: 4305495465668506, guid: 4a10d14c005036744848edafde148a43, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.24
+      objectReference: {fileID: 0}
     - target: {fileID: 4314356883782394, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1342,11 +1379,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4606664870246522, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_LocalScale.y
-      value: 41.70245
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4606664870246522, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_LocalScale.z
-      value: 60
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4606664870246522, guid: 4a10d14c005036744848edafde148a43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2416,6 +2453,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -462981019419857548, guid: 2b6f972eb8bcb64468d1870eedfceba0,
         type: 3}
+    - target: {fileID: 64773741008996960, guid: 4a10d14c005036744848edafde148a43,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 4fce5ec4d4e98fe41acd0ea05eb476cc,
+        type: 2}
     - target: {fileID: 64826803377123928, guid: 4a10d14c005036744848edafde148a43,
         type: 3}
       propertyPath: m_Mesh
@@ -4811,7 +4854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2068112219}
   - component: {fileID: 2068112220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4848,7 +4891,7 @@ MonoBehaviour:
   paintballPrefab: {fileID: 3420009464656170032, guid: 60a1427eddce06b45a540fc91daeff54,
     type: 3}
   shootpoint: {fileID: 1106013875}
-  shootForce: 20
+  shootForce: 15
   colorIndx: 1
   shootRepeatDur: 0.2
   lastShotTime: 0

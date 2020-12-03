@@ -9,16 +9,19 @@ public class PaintHandler : MonoBehaviour {
     public Color paintColor1 = Color.magenta;
     public Color paintColor2 = Color.cyan;
     public Color paintColor3 = Color.yellow;
+    public LayerMask paintableLayer;
     public float paintScale = 0.1f;
     public bool randomRotation = true;
     public float randomScaleAmount = 0.2f;
     public int numPaintSplatRays = 15;
     public bool paintRunEffect = true;
+    public bool blurPaint = false;
     // position and timers
     List<Vector4> paintDrips = new List<Vector4>();
     // List<float> paintDripTimers = new List<float>();
     [ContextMenuItem("Clear", "ClearPaint")]
     public bool clearPaintOnStart = true;
+    int uvOffsetY = 0;
 
 
     void Start() {
@@ -45,13 +48,36 @@ public class PaintHandler : MonoBehaviour {
     }
     public int GetPaintColor(Vector3 pos, Vector3 dir) {
         int color = 0;
+        // if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 50)) {
+        //             Vector2 uvpoint = hit.lightmapCoord;
+        //             // todo get area and average
+        //             int pointX = (int)(uvpoint.x * paintmap.width);
+        //             int pointY = (int)(uvpoint.y * paintmap.height) + uvOffsetY;
+        //             // Color[] pmapoColors = paintmap.GetPixels(startX, startY, blockWidth, blockHeight);
+        //             Color col = paintmap.GetPixel(pointX, pointY);
 
+        //             // get dominant color
+        //             int mc = 0;
+        //             float mcv = 0;
+        //             for (int c = 0; c < 4; c++) {
+        //                 if (col[c] > mcv) {
+        //                     mcv = col[c];
+        //                     mc = c;
+        //                 }
+        //             }
+        //             if (mcv <= 0.1f) {
+        //                 Debug.Log("No Paint there");
+        //             } else {
+        //                 Debug.Log($"Paint {mc} {(mc == 0 ? "green" : (mc == 1 ? "purple" : (mc == 2 ? "white" : "other")))}");
+        //             }
+        //         }
         return color;
     }
     public void PaintSplat(Vector3 pos, Vector3 dir, int color) {
         // fire multiple rays to find surfaces to paint
         // randomly?
         RaycastHit hit;
+        List<int> hitRenderers = new List<int>();
         for (int rayi = 0; rayi < numPaintSplatRays; rayi++) {
             // random variation
             Vector3 ranDir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
@@ -62,11 +88,13 @@ public class PaintHandler : MonoBehaviour {
             }
             // raycast to get uv coords
             // must have a mesh collider and be lightmap static
-            List<int> hitRenderers = new List<int>();
             float rayLength = 0.5f;
             Debug.DrawRay(pos, rayDir * rayLength, Color.red, 2);
-            if (Physics.Raycast(pos, rayDir, out hit, rayLength)) {
+            if (Physics.Raycast(pos, rayDir, out hit, rayLength, paintableLayer.value)) {
                 Vector2 uvpoint = hit.lightmapCoord;
+                if (uvpoint == Vector2.zero) {
+                    continue;
+                }
                 Renderer affectedR = hit.collider.GetComponent<Renderer>();
                 if (!affectedR) {
                     affectedR = hit.collider.GetComponentInParent<Renderer>();
@@ -74,14 +102,57 @@ public class PaintHandler : MonoBehaviour {
                 if (!affectedR) {
                     continue;
                 }
-                if (hitRenderers.Contains(affectedR.GetInstanceID())) {
+                int gid = hit.collider.gameObject.GetInstanceID();
+                // Debug.Log("check id "+gid+" in:"+hitRenderers.Contains(gid)+" a:"+hitRenderers+"");
+                if (hitRenderers.Contains(gid)) {
                     continue;
                 }
-                hitRenderers.Add(affectedR.GetInstanceID());
+                hitRenderers.Add(gid);
+                Debug.DrawRay(hit.point, hit.normal * 2, Color.blue, 2);
+                Vector2 goScale = Vector2.one;
+                Vector3 lscale = hit.collider.transform.localScale;
+                string dbgscale = "na";
+                if (lscale.x == lscale.y && lscale.x == lscale.z) {
+                    goScale *= lscale.x;
+                    dbgscale = "even";
+                } else {
+                    float fdot = Mathf.Abs(Vector3.Dot(hit.normal, hit.collider.transform.forward));
+                    float rdot = Mathf.Abs(Vector3.Dot(hit.normal, hit.collider.transform.right));
+                    float updot = Mathf.Abs(Vector3.Dot(hit.normal, hit.collider.transform.up));
+                    if (fdot >= rdot && fdot >= updot) {
+                        // hit forward side
+                        goScale.x = lscale.x;
+                        goScale.y = lscale.y;
+                        dbgscale = "forw";
+                    } else if (rdot >= fdot && rdot >= updot) {
+                        // hit right side
+                        goScale.x = lscale.z;
+                        goScale.y = lscale.y;
+                        dbgscale = "right";
+                    } else {
+                        // hit top side
+                        goScale.x = lscale.x;
+                        goScale.y = lscale.z;
+                        dbgscale = "top";
+                    }
+                    // Debug.Log($"fd:{fdot} rd:{rdot} ud:{updot}");
+                }
                 Vector2 uvscale = new Vector2(affectedR.lightmapScaleOffset.x, affectedR.lightmapScaleOffset.y);
-                Debug.Log($"hit {affectedR.name} uvpoint: {uvpoint} uvscale: {uvscale}");
-                if (uvpoint == Vector2.zero) {
-                    continue;
+                uvscale.x = Mathf.Clamp(uvscale.x, 0.01f, 1f);
+                uvscale.y = Mathf.Clamp(uvscale.y, 0.01f, 1f);
+                // uvscale.x = goScale.x;
+                // uvscale.y = goScale.y;
+                // Debug.Log($"hit {affectedR.name} uvpoint: {uvpoint} uvscale: {uvscale} goscale: {goScale} side {dbgscale}");
+                float gscaleRatio = goScale.x / goScale.y;
+                // uvscale.x = Mathf.Pow(uvscale.x, 0.5f);
+                // uvscale.y = Mathf.Pow(uvscale.y, 0.5f);
+                // uvscale.x *= goScale.x;
+                // uvscale.y *= goScale.y;
+                if (gscaleRatio < 1) {
+                    uvscale.y *= 1 / gscaleRatio;
+                } else {
+                    // uvscale.x *= gscaleRatio;
+                    uvscale.y *= gscaleRatio;
                 }
                 Paint(uvpoint, uvscale, color, true);
             }
@@ -97,21 +168,28 @@ public class PaintHandler : MonoBehaviour {
         // convert to pixel scale
         int pointX = (int)(uvpos.x * paintmap.width);
         int pointY = (int)(uvpos.y * paintmap.height);
+        // uvscale.x = Mathf.Pow(uvscale.x, 0.5f);
+        // uvscale.y = Mathf.Pow(uvscale.y, 0.5f);
+        uvscale /= 16;
         uvscale *= paintScale;
         int blockWidth = (int)(uvscale.x * paintmap.width);
         int blockHeight = (int)(uvscale.y * paintmap.height);
-        blockWidth = Mathf.Clamp(blockWidth, 1, splatTex.width);
-        blockHeight = Mathf.Clamp(blockHeight, 1, splatTex.height);
+        blockWidth = Mathf.Clamp(blockWidth, 4, paintmap.width / 2);
+        blockHeight = Mathf.Clamp(blockHeight, 4, paintmap.height / 2);
+        // blockWidth = Mathf.Clamp(blockWidth, 1, splatTex.width);
+        // blockHeight = Mathf.Clamp(blockHeight, 1, splatTex.height);
+        // blockWidth = 64;
+        // blockHeight = 64;
 
         int midX = blockWidth / 2;
         int midY = blockHeight / 2;
-        int startX = Mathf.Clamp(pointX - midX, 0, paintmap.width);
-        int startY = Mathf.Clamp(pointY - midY, 0, paintmap.height);
+        int startX = Mathf.Clamp(pointX - midX, 0, paintmap.width - blockWidth);
+        int startY = Mathf.Clamp(pointY - midY, 0, paintmap.height - blockHeight);
 
-        float splatRot = Random.Range(0, 2 * Mathf.PI);
-        float splatScale = Random.Range(1 - randomScaleAmount, 1 + randomScaleAmount);
+        float splatRandRot = Random.Range(0, 2 * Mathf.PI);
+        float splatRandScale = Random.Range(1 - randomScaleAmount, 1 + randomScaleAmount);
 
-        // get transformed(rotated and scaled) splat
+        // get transformed (rotated and scaled) splat
         Color[][] tsplatcols = new Color[blockHeight][];
         for (int y = 0; y < blockHeight; y++) {
             tsplatcols[y] = new Color[blockWidth];
@@ -119,24 +197,26 @@ public class PaintHandler : MonoBehaviour {
                 float tx = x - midX;
                 float ty = y - midY;
                 // scale
-                tx *= splatScale;
-                ty *= splatScale;
+                tx *= splatTex.width / blockWidth;
+                ty *= splatTex.height / blockHeight;
+                tx *= splatRandScale;
+                ty *= splatRandScale;
                 if (randomRotation) {
                     // rotate
-                    float cosr = Mathf.Cos(splatRot);
-                    float sinr = Mathf.Sin(splatRot);
+                    float cosr = Mathf.Cos(splatRandRot);
+                    float sinr = Mathf.Sin(splatRandRot);
                     float txa = tx * cosr + ty * sinr;
                     float tya = ty * cosr - tx * sinr;
                     tx = txa;
                     ty = tya;
                 }
-                int txi = Mathf.RoundToInt(tx + midX);
-                int tyi = Mathf.RoundToInt(ty + midY);
+                int txi = Mathf.RoundToInt(tx + splatTex.width / 2);
+                int tyi = Mathf.RoundToInt(ty + splatTex.height / 2);
                 if (txi == Mathf.Clamp(txi, 0, splatTex.width) && tyi == Mathf.Clamp(tyi, 0, splatTex.height)) {
-                    // use only alpha value, color later
-                    // float a = splatTex.GetPixel(txi, tyi).a;
-                    // tsplatcols[y][x] = new Color(a, a, a, a);
-                    tsplatcols[y][x] = splatTex.GetPixel(txi, tyi);
+                    // use only alpha value, color is later
+                    float a = splatTex.GetPixel(txi, tyi).a;
+                    tsplatcols[y][x] = new Color(a, a, a, a);
+                    // tsplatcols[y][x] = splatTex.GetPixel(txi, tyi);
                 } else {
                     tsplatcols[y][x] = new Color(0, 0, 0, 0);
                 }
@@ -144,13 +224,15 @@ public class PaintHandler : MonoBehaviour {
             }
         }
         // 1px blur
-        // for (int x = 1; x < blockWidth - 1; x++) {
-        //     for (int y = 1; y < blockHeight - 1; y++) {
-        //         float navg = (tsplatcols[y][x].a + tsplatcols[y - 1][x].a + tsplatcols[y + 1][x].a +
-        //             tsplatcols[y][x - 1].a + tsplatcols[y + 1][x].a) / 5;
-        //         tsplatcols[y][x] = new Color(navg, navg, navg, navg);
-        //     }
-        // }
+        if (blurPaint) {
+            for (int x = 1; x < blockWidth - 1; x++) {
+                for (int y = 1; y < blockHeight - 1; y++) {
+                    float navg = (tsplatcols[y][x].a + tsplatcols[y - 1][x].a + tsplatcols[y + 1][x].a +
+                        tsplatcols[y][x - 1].a + tsplatcols[y + 1][x].a) / 5f;
+                    tsplatcols[y][x] = new Color(navg, navg, navg, navg);
+                }
+            }
+        }
         // convert to single array
         Color[] splatmapColors = new Color[blockWidth * blockHeight];
         for (int x = 0; x < blockWidth; x++) {
@@ -161,7 +243,7 @@ public class PaintHandler : MonoBehaviour {
         Color colorToPaint = colorIndx == 0 ? paintColor1 : (colorIndx == 1 ? paintColor2 : (colorIndx == 2 ? paintColor3 : paintColor1));
         // add splat to original array
         Color[] originalColors = paintmap.GetPixels(startX, startY, blockWidth, blockHeight);
-        Debug.Log($"painting at: {startX},{startY}  block: {blockWidth},{blockHeight} rot:{splatRot / 6.283f},sc:{splatScale}");
+        Debug.Log($"painting at: {startX},{startY}  block: {blockWidth},{blockHeight} rot:{splatRandRot / 6.283f},sc:{splatRandScale}");
         for (int i = 0; i < splatmapColors.Length; i++) {
             // int x = i / scaleX; //Mathf.FloorToInt((i + 0f) / scaleX);
             // int y = i % scaleY;

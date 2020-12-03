@@ -6,12 +6,14 @@ public class PaintProjectile : MonoBehaviour
 {
     public float speed = 10;
     public int colorIndx = 0;
+    public float ttl = 10;
     public GameObject splatFXPrefab;
     PaintHandler paintHandler;
 
     void Start()
     {
         paintHandler = GameObject.FindGameObjectWithTag("PaintHandler").GetComponent<PaintHandler>();
+        Destroy(gameObject, ttl);
     }
 
     void Update()
@@ -22,6 +24,6 @@ public class PaintProjectile : MonoBehaviour
         var contact = other.GetContact(0);
         paintHandler.PaintSplat(transform.position, contact.point - transform.position, colorIndx);
         Instantiate(splatFXPrefab, contact.point, Quaternion.Euler(contact.normal));
-        Destroy(gameObject, 0.1f);
+        Destroy(gameObject, 0.01f);
     }
 }
