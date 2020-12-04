@@ -16,6 +16,7 @@ public class PaintGun : MonoBehaviour {
     public Rigidbody rb;
     public Bottle paintBottle;
     PaintHandler paintHandler;
+    public bool aimAtTarget = false;
 
     void Start() {
         cam = Camera.main.transform;
@@ -57,7 +58,7 @@ public class PaintGun : MonoBehaviour {
         PaintProjectile projectile = pbgo.GetComponent<PaintProjectile>();
 
         Vector3 shootDir = pbgo.transform.forward;
-        if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, 100, paintableLayer.value)) {
+        if (aimAtTarget && Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, 100, paintableLayer.value)) {
             shootDir = hit.point - shootpoint.position;
             shootDir.Normalize();
         }
