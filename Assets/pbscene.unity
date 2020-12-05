@@ -1636,7 +1636,7 @@ GameObject:
   - component: {fileID: 1020717992}
   - component: {fileID: 1020717991}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: PostProcessingVol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2507,7 +2507,7 @@ MonoBehaviour:
   numPaintSplatRays: 10
   paintRunEffect: 1
   blurPaint: 0
-  clearPaintOnStart: 0
+  clearPaintOnStart: 1
   clearPaintOnEnd: 0
   dbglog: 0
 --- !u!4 &1321897491
@@ -7859,7 +7859,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2145340650}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

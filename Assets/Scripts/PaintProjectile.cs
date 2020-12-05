@@ -22,9 +22,9 @@ public class PaintProjectile : MonoBehaviour {
         Color color = paintHandler.GetColor(colorIndx);
         paintHandler.PaintSplat(transform.position, contact.point - transform.position, colorIndx);
         GameObject splatgo = Instantiate(splatFXPrefab, contact.point, Quaternion.Euler(contact.normal));
-        ParticleSystem[] pss = splatgo.GetComponentsInChildren<ParticleSystem>();
-        for (int i = 0; i < pss.Length; i++) {
-            var main = pss[i].main;
+        ParticleSystem[] parsyss = splatgo.GetComponentsInChildren<ParticleSystem>();
+        for (int i = 0; i < parsyss.Length; i++) {
+            var main = parsyss[i].main;
             main.startColor = new ParticleSystem.MinMaxGradient(color);
         }
         Renderer[] rs = splatgo.GetComponentsInChildren<Renderer>();
