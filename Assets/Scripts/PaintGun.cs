@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PaintGun : MonoBehaviour {
     public GameObject paintballPrefab;
@@ -17,36 +18,61 @@ public class PaintGun : MonoBehaviour {
     public Bottle paintBottle;
     PaintHandler paintHandler;
     public bool aimAtTarget = false;
+    public Transform secondHandle;
+    public GameObject gunAimGO;
+    public InputActionReference shootBtn;
+    public InputActionReference nextColorBtn;
+    public InputActionReference triggerValue;
 
     void Start() {
         cam = Camera.main.transform;
         paintHandler = GameObject.FindGameObjectWithTag("PaintHandler").GetComponent<PaintHandler>();
+        shootBtn.asset.Enable();
+        shootBtn.action.performed += c => { TryShoot(); };
+        nextColorBtn.action.performed += c => { NextPaintColor(); };
+        triggerValue.action.performed += c => {
+            if (c.ReadValue<float>() > 0.1f) { gunAimGO.SetActive(true); } else { gunAimGO.SetActive(false); }
+        };
+        triggerValue.action.canceled += c => { gunAimGO.SetActive(false); };
     }
 
-    void Update() {
+    // void Update() {
+
+        // if (Input.GetButton("Fire1")) {
+
+        // }
+        // float inpscroll = Input.GetAxis("Mouse ScrollWheel");
+        // if (inpscroll != 0) {
+        //     colorIndx += -1 * (int)Mathf.Sign(inpscroll);
+        //     colorIndx = Mathf.Clamp(colorIndx, -1, 3);
+        // }
+        // if (Input.GetKeyDown(KeyCode.Alpha1)) {
+        //     colorIndx = 0;
+        // } else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+        //     colorIndx = 1;
+        // } else if (Input.GetKeyDown(KeyCode.Alpha3)) {
+        //     colorIndx = 2;
+        // } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
+        //     colorIndx = -1;
+        // }
+    // }
+    void NextPaintColor() {
         if (Time.timeScale == 0) {
             return;
         }
-        if (Input.GetButton("Fire1")) {
-            if (Time.time >= lastShotTime + shootRepeatDur) {
-                Shoot();
-            }
-        }
-        float inpscroll = Input.GetAxis("Mouse ScrollWheel");
-        if (inpscroll != 0) {
-            colorIndx += -1 * (int)Mathf.Sign(inpscroll);
-            colorIndx = Mathf.Clamp(colorIndx, -1, 3);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            colorIndx = 0;
-        } else if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            colorIndx = 1;
-        } else if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            colorIndx = 2;
-        } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
+        colorIndx++;
+        if (colorIndx >= 3) {
             colorIndx = -1;
         }
         paintBottle.SetColor(paintHandler.GetColor(colorIndx));
+    }
+    void TryShoot() {
+        if (Time.timeScale == 0) {
+            return;
+        }
+        if (Time.time >= lastShotTime + shootRepeatDur) {
+            Shoot();
+        }
     }
     void Shoot() {
         GameObject sfxgo = Instantiate(shootFxPrefab, shootpoint.position, shootpoint.rotation);
