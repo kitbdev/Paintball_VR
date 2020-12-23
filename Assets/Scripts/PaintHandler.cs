@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Jobs;
 
 public class PaintHandler : MonoBehaviour {
 
@@ -122,6 +123,7 @@ public class PaintHandler : MonoBehaviour {
     public void PaintSplat(Vector3 pos, Vector3 dir, int color) {
         // fire multiple rays to find surfaces to paint
         // randomly?
+        // todo make more performant
         RaycastHit hit;
         List<int> hitRenderers = new List<int>();
         for (int rayi = 0; rayi < numPaintSplatRays; rayi++) {
