@@ -1,4 +1,12 @@
-# XRTerra_Paintball
+# XRTerra_Paintball VR
+
+VR mode
+features:
+teleportation
+world space ui
+snap turn
+two handed gun
+quest version
 
 Additional Features:
 splat mapping, toon shading, bottle and liquid shader, gun model, shoot fx, skybox shader, multiple paint colors, erasing paint, post processing, overlay camera, lightmaps, multiple targets (enemies) 
