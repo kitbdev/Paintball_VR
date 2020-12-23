@@ -22,25 +22,40 @@ public class PaintGun : MonoBehaviour {
     public GameObject gunAimGO;
     public InputActionReference shootBtn;
     public InputActionReference nextColorBtn;
+    public InputActionReference prevColorBtn;
     public InputActionReference triggerValue;
+    bool inputShooting = false;
+    // float nextColor = 0;
 
     void Start() {
         cam = Camera.main.transform;
         paintHandler = GameObject.FindGameObjectWithTag("PaintHandler").GetComponent<PaintHandler>();
+        paintBottle.SetColor(paintHandler.GetColor(colorIndx));
+
         shootBtn.asset.Enable();
-        shootBtn.action.performed += c => { TryShoot(); };
+        shootBtn.action.performed += c => { inputShooting = true; };
+        shootBtn.action.canceled += c => { inputShooting = false; };
+
+        prevColorBtn.action.performed += c => { PrevPaintColor(); };
         nextColorBtn.action.performed += c => { NextPaintColor(); };
         triggerValue.action.performed += c => {
+            if (Time.timeScale == 0) {
+                gunAimGO.SetActive(false);
+                return;
+            }
             if (c.ReadValue<float>() > 0.1f) { gunAimGO.SetActive(true); } else { gunAimGO.SetActive(false); }
         };
         triggerValue.action.canceled += c => { gunAimGO.SetActive(false); };
     }
 
-    // void Update() {
+    void Update() {
+        if (Time.timeScale == 0) {
+            return;
+        }
 
-        // if (Input.GetButton("Fire1")) {
-
-        // }
+        if (inputShooting) {
+            TryShoot();
+        }
         // float inpscroll = Input.GetAxis("Mouse ScrollWheel");
         // if (inpscroll != 0) {
         //     colorIndx += -1 * (int)Mathf.Sign(inpscroll);
@@ -55,7 +70,17 @@ public class PaintGun : MonoBehaviour {
         // } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
         //     colorIndx = -1;
         // }
-    // }
+    }
+    void PrevPaintColor() {
+        if (Time.timeScale == 0) {
+            return;
+        }
+        colorIndx--;
+        if (colorIndx < -1) {
+            colorIndx = 3;
+        }
+        paintBottle.SetColor(paintHandler.GetColor(colorIndx));
+    }
     void NextPaintColor() {
         if (Time.timeScale == 0) {
             return;
@@ -84,10 +109,10 @@ public class PaintGun : MonoBehaviour {
         PaintProjectile projectile = pbgo.GetComponent<PaintProjectile>();
 
         Vector3 shootDir = pbgo.transform.forward;
-        if (aimAtTarget && Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, 100, paintableLayer.value)) {
-            shootDir = hit.point - shootpoint.position;
-            shootDir.Normalize();
-        }
+        // if (aimAtTarget && Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, 100, paintableLayer.value)) {
+        //     shootDir = hit.point - shootpoint.position;
+        //     shootDir.Normalize();
+        // }
 
         projectile.colorIndx = colorIndx;
         Renderer r = pbgo.GetComponentInChildren<Renderer>();

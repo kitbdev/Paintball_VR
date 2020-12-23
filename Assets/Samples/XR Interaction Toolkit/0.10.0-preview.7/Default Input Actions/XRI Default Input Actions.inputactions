@@ -466,6 +466,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "PrevColor",
+                    "type": "Button",
+                    "id": "b7fd4fbd-b223-4911-89b3-a79ae81cef57",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -526,28 +534,6 @@
                 },
                 {
                     "name": "",
-                    "id": "d6c08c3d-3d41-4695-994d-1ac9016a5a9e",
-                    "path": "<XRController>{RightHand}/Primary2DAxis",
-                    "interactions": "Sector(directions=12,sweepBehavior=1)",
-                    "processors": "",
-                    "groups": "Generic XR Controller",
-                    "action": "Turn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "70f78baa-0f00-4d32-a2b6-ea9e2090ecc2",
-                    "path": "<XRController>{RightHand}/Primary2DAxis",
-                    "interactions": "Sector(directions=2,sweepBehavior=2)",
-                    "processors": "",
-                    "groups": "Generic XR Controller",
-                    "action": "Turn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3de72d27-6d0f-4d5f-935c-1569f7b65825",
                     "path": "<XRController>{RightHand}/Primary2DAxis",
                     "interactions": "",
@@ -574,7 +560,7 @@
                     "path": "<XRController>{RightHand}/primaryButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Generic XR Controller",
                     "action": "NextColor",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -582,6 +568,17 @@
                 {
                     "name": "",
                     "id": "b4506185-bc53-4e0d-a8c4-3a6d460a81c9",
+                    "path": "<XRController>{RightHand}/Primary2DAxis",
+                    "interactions": "Sector(directions=4,sweepBehavior=2)",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "NextColor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a001f4d3-d657-46d7-a5ee-86ad2e5741d2",
                     "path": "",
                     "interactions": "",
                     "processors": "",
@@ -620,6 +617,28 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "hovertrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "346d316b-7eb1-4831-af15-66f3e9df32d8",
+                    "path": "<XRController>{RightHand}/Primary2DAxis",
+                    "interactions": "Sector(directions=12,sweepBehavior=2)",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "PrevColor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24a43c66-7ab7-4d56-be7e-f53561c9d293",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrevColor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
