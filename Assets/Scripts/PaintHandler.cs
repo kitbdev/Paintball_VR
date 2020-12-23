@@ -204,7 +204,8 @@ public class PaintHandler : MonoBehaviour {
                 }
                 uvscale.x = Mathf.Clamp(uvscale.x, 0.02f, 1f);
                 uvscale.y = Mathf.Clamp(uvscale.y, 0.02f, 1f);
-                Paint(uvpoint, uvscale, color, true);
+                // Paint(uvpoint, uvscale, color, true);
+                StartCoroutine(PaintCo(uvpoint, uvscale, color, true));
             }
             paintmap.Apply();
             // drips
@@ -212,6 +213,10 @@ public class PaintHandler : MonoBehaviour {
 
             }
         }
+    }
+    IEnumerator PaintCo(Vector2 uvpos, Vector2 uvscale, int colorIndx, bool waitToApply = false){
+        yield return null;
+        Paint(uvpos, uvscale, colorIndx,waitToApply);
     }
     void Paint(Vector2 uvpos, Vector2 uvscale, int colorIndx, bool waitToApply = false) {
 
